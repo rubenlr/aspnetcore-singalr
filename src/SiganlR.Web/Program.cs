@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace SiganlR.Web
 {
@@ -17,8 +11,13 @@ namespace SiganlR.Web
             BuildWebHost(args).Run();
         }
 
+        private static IConfigurationRoot Configuration(string[] args) => new ConfigurationBuilder().AddCommandLine(args).Build();
+
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .CaptureStartupErrors(true)
+                .UseSetting(WebHostDefaults.DetailedErrorsKey, "true")
+                .UseConfiguration(Configuration(args))
                 .UseStartup<Startup>()
                 .Build();
     }
